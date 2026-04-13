@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail du trajet – EcoRide</title>
+  <style>
+:root{--primary:#2E7D32;--primary-light:#4CAF50;--primary-lighter:#81C784;--primary-pale:#C8E6C9;--accent:#8BC34A;--eco-badge:#00897B;--background:#F1F8E9;--surface:#FFFFFF;--surface-alt:#F9FBF7;--text-primary:#1B5E20;--text-secondary:#388E3C;--text-muted:#78909C;--text-dark:#263238;--warning:#F57C00;--error:#C62828;--border:#C8E6C9;--shadow:rgba(46,125,50,0.12);--shadow-md:rgba(46,125,50,0.20);--radius:10px;--radius-sm:6px;--radius-lg:16px;--transition:all 0.2s ease;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;font-size:16px}body{font-family:var(--font);background:var(--background);color:var(--text-dark);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}img{max-width:100%;height:auto;display:block}a{color:var(--primary);text-decoration:none;transition:var(--transition)}a:hover{color:var(--primary-light)}ul{list-style:none}button,input,select,textarea{font-family:inherit}
+.site-header{background:var(--primary);box-shadow:0 2px 8px var(--shadow-md);position:sticky;top:0;z-index:1000}.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:1.4rem;font-weight:700}.nav-links{display:flex;align-items:center;gap:.25rem}.nav-links a{color:rgba(255,255,255,.88);padding:.4rem .85rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:500;transition:var(--transition)}.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(255,255,255,.18)}.nav-links .btn-nav-primary{background:var(--accent);color:var(--text-primary);font-weight:600;margin-left:.5rem}.nav-credits{display:flex;align-items:center;gap:.4rem;color:#fff;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:.3rem .75rem;border-radius:20px;margin-left:.5rem}.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}.burger span{width:24px;height:2px;background:#fff;border-radius:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;white-space:nowrap;text-decoration:none}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover{background:var(--primary-light);border-color:var(--primary-light);color:#fff}.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}.btn-danger{background:var(--error);color:#fff;border-color:var(--error)}.btn-sm{padding:.4rem .9rem;font-size:.85rem}.btn-lg{padding:.85rem 2rem;font-size:1.05rem}.btn:disabled{opacity:.5;cursor:not-allowed}.w-full{width:100%}
+.card{background:var(--surface);border-radius:var(--radius);padding:1.5rem;box-shadow:0 2px 12px var(--shadow);border:1px solid var(--border);transition:var(--transition)}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}.card-header h3{color:var(--primary);font-size:1.05rem}
+.badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:20px;font-size:.78rem;font-weight:600}.badge-eco{background:#E0F2F1;color:var(--eco-badge)}.badge-active{background:#E8F5E9;color:var(--primary)}.badge-started{background:#FFF8E1;color:#E65100}.badge-completed{background:#E3F2FD;color:#1565C0}.badge-cancelled{background:#FFEBEE;color:var(--error)}
+.container{max-width:1200px;margin:0 auto;padding:0 1.5rem}.section{padding:3rem 0}
+.alert{padding:.85rem 1.25rem;border-radius:var(--radius-sm);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}.alert-success{background:#E8F5E9;color:#1B5E20;border-left:4px solid var(--primary)}.alert-error{background:#FFEBEE;color:#B71C1C;border-left:4px solid var(--error)}.alert-info{background:#E3F2FD;color:#0D47A1;border-left:4px solid #1976D2}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:var(--transition)}.modal-overlay.open{opacity:1;visibility:visible}.modal{background:var(--surface);border-radius:var(--radius-lg);padding:2rem;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(20px);transition:var(--transition)}.modal-overlay.open .modal{transform:translateY(0)}.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}.modal-header h3{color:var(--primary);font-size:1.15rem}.modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);line-height:1}.modal-close:hover{color:var(--error)}
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}@media(max-width:900px){.detail-grid{grid-template-columns:1fr}}.detail-hero{background:linear-gradient(135deg,var(--primary),#1B5E20);border-radius:var(--radius-lg);padding:2rem;color:#fff;margin-bottom:1.5rem}.route-display{display:flex;align-items:center;gap:1rem;font-size:1.3rem;font-weight:700}.route-display .divider{flex:1;border-top:2px dashed rgba(255,255,255,.4)}.preferences-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.pref-item{display:flex;align-items:center;gap:.5rem;padding:.6rem;background:var(--surface-alt);border-radius:var(--radius-sm);font-size:.9rem}.pref-item .icon{font-size:1.1rem}.pref-allowed{color:var(--primary)}.pref-forbidden{color:var(--error)}
+.driver-info{display:flex;align-items:center;gap:.75rem}.driver-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--primary-pale);background:var(--primary-pale)}.driver-avatar-sm{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--primary-pale)}.driver-name{font-weight:600;font-size:.95rem}.star-rating{color:#F9A825;font-size:.85rem}
+.review-item{display:flex;gap:.75rem;padding:1rem 0;border-bottom:1px solid var(--border)}.review-item:last-child{border-bottom:none}.review-content .reviewer{font-weight:600;font-size:.9rem}.review-content .date{font-size:.78rem;color:var(--text-muted)}.review-content .comment{margin-top:.3rem;font-size:.9rem}
+.vehicle-energy{display:flex;align-items:center;gap:.3rem;font-size:.82rem;padding:.2rem .6rem;border-radius:20px}.energy-electrique{background:#E0F2F1;color:var(--eco-badge)}.energy-hybride{background:#E8F5E9;color:var(--primary)}.energy-essence{background:#FFF8E1;color:#E65100}.energy-diesel{background:#ECEFF1;color:#546E7A}
+.site-footer{background:#1B5E20;color:rgba(255,255,255,.85);padding:2.5rem 1.5rem 1.5rem;margin-top:auto}.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem}.footer-brand .logo{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.5rem}.footer-col h4{color:var(--primary-lighter);font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem}.footer-col a{display:block;color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:.4rem}.footer-col a:hover{color:#fff}.footer-col .contact-email{display:flex;align-items:center;gap:.5rem;color:var(--primary-lighter);font-weight:600}.footer-bottom{max-width:1200px;margin:1.5rem auto 0;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;align-items:center;font-size:.85rem;opacity:.65;flex-wrap:wrap;gap:.5rem}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.text-primary{color:var(--primary)}.hidden{display:none!important}.flex-between{display:flex;justify-content:space-between;align-items:center}.flex-center{display:flex;align-items:center;justify-content:center}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.w-full{width:100%}.skeleton{background:linear-gradient(90deg,#e0e0e0 25%,#f0f0f0 50%,#e0e0e0 75%);background-size:200% 100%;animation:skeleton 1.4s infinite;border-radius:4px}@keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--primary);flex-direction:column;padding:1rem;gap:.25rem}.nav-links.open{display:flex}.nav-links a{width:100%;padding:.65rem 1rem}.burger{display:flex}.site-header{position:relative}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="index.html" class="nav-logo"><span class="leaf-icon">🌿</span> EcoRide</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="search.html" class="active">Covoiturages</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li id="navLogin"><a href="login.html">Connexion</a></li>
+      <li id="navRegister"><a href="register.html" class="btn-nav-primary">S'inscrire</a></li>
+      <li id="navUser" class="hidden" style="display:flex;align-items:center;gap:.5rem">
+        <span id="navPseudo" class="nav-credits"></span>
+        <span class="nav-credits">🪙 <span id="navCredits">—</span></span>
+        <a href="user/dashboard.html">Mon espace</a>
+        <a href="#" class="logout-btn" data-base="./">Déconnexion</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container section">
+  <a href="javascript:history.back()" class="btn btn-outline btn-sm mb-2">← Retour aux résultats</a>
+  <div id="alertZone"></div>
+  <div id="tripContent">
+    <!-- Chargement -->
+    <div class="detail-grid">
+      <div>
+        <div class="skeleton" style="height:120px;border-radius:16px;margin-bottom:1.5rem"></div>
+        <div class="skeleton" style="height:80px;border-radius:10px;margin-bottom:1rem"></div>
+        <div class="skeleton" style="height:200px;border-radius:10px"></div>
+      </div>
+      <div>
+        <div class="skeleton" style="height:300px;border-radius:10px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODALE CONFIRMATION DE RÉSERVATION                          -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="bookModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🪙 Confirmer la réservation</h3>
+      <button class="modal-close">×</button>
+    </div>
+    <p>Vous êtes sur le point de réserver ce trajet.</p>
+    <div style="background:var(--background);border-radius:8px;padding:1rem;margin:1rem 0">
+      <div class="flex-between mb-1">
+        <span>Prix du trajet</span>
+        <strong id="modalPrice">—</strong>
+      </div>
+      <div class="flex-between mb-1">
+        <span>Vos crédits actuels</span>
+        <span id="modalCredits">—</span>
+      </div>
+      <div class="flex-between" style="border-top:1px solid var(--border);padding-top:.75rem;margin-top:.75rem">
+        <strong>Crédits restants après</strong>
+        <strong id="modalRemaining" class="text-primary">—</strong>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-muted)">Cette action est irréversible. Confirmez-vous la réservation ?</p>
+    <div style="display:flex;gap:.75rem;margin-top:1.5rem">
+      <button class="btn btn-outline w-full modal-close">Annuler</button>
+      <button class="btn btn-primary w-full" id="confirmBookBtn">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-brand"><div class="logo">🌿 EcoRide</div></div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="index.html">Accueil</a>
+      <a href="legal.html">Mentions légales</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="contact-email">📧 contact@ecoride.fr</div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 EcoRide.</span></div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+window.API_BASE = 'php/';
+document.addEventListener('DOMContentLoaded', async () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) {
+    document.getElementById('tripContent').innerHTML = '<div class="alert alert-error">❌ Trajet introuvable.</div>';
+    return;
+  }
+
+  const data = await EcoRide.apiRequest('php/trips.php', 'GET', { action: 'detail', id });
+  if (!data.success) {
+    document.getElementById('tripContent').innerHTML = `<div class="alert alert-error">❌ ${data.message}</div>`;
+    return;
+  }
+
+  const t   = data.trip;
+  const user = EcoRide.getAuthState();
+  const canBook = user && user.role === 'user' && t.available_seats > 0 && t.status === 'active';
+  const energyLabels = { electrique: '⚡ Électrique', hybride: '🔋 Hybride', essence: '⛽ Essence', diesel: '🛢️ Diesel' };
+  const energyClass  = { electrique: 'energy-electrique', hybride: 'energy-hybride', essence: 'energy-essence', diesel: 'energy-diesel' };
+
+  document.getElementById('tripContent').innerHTML = `
+    <div class="detail-grid">
+      <div>
+        <!-- Route principale -->
+        <div class="detail-hero">
+          <div class="route-display">
+            <div>
+              <div style="font-size:.85rem;opacity:.8">Départ</div>
+              <div>${t.departure_city}</div>
+              <div style="font-size:.8rem;opacity:.7">${t.departure_address}</div>
+            </div>
+            <div class="divider"></div>
+            <div style="text-align:right">
+              <div style="font-size:.85rem;opacity:.8">Arrivée</div>
+              <div>${t.arrival_city}</div>
+              <div style="font-size:.8rem;opacity:.7">${t.arrival_address}</div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;display:flex;gap:1rem;flex-wrap:wrap;font-size:.9rem;opacity:.9">
+            <span>📅 ${EcoRide.formatDate(t.departure_datetime)}</span>
+            <span>🕐 ${EcoRide.formatTime(t.departure_datetime)}</span>
+            ${t.arrival_datetime ? `<span>🏁 ${EcoRide.formatTime(t.arrival_datetime)}</span>` : ''}
+            <span>🪑 ${t.available_seats} place${t.available_seats > 1 ? 's' : ''} disponible${t.available_seats > 1 ? 's' : ''}</span>
+            ${t.is_eco ? '<span class="badge badge-eco">⚡ Voyage écologique</span>' : ''}
+          </div>
+        </div>
+
+        <!-- Conducteur -->
+        <div class="card mb-2">
+          <div class="card-header"><h3>👤 Le conducteur</h3></div>
+          <div class="driver-info">
+            <img src="assets/avatars/${t.driver_photo || 'default-avatar.png'}" alt="${t.driver_pseudo}"
+                 class="driver-avatar" style="width:64px;height:64px"
+                 onerror="this.src='assets/avatars/default-avatar.png'">
+            <div>
+              <div style="font-size:1.1rem;font-weight:700">${t.driver_pseudo}</div>
+              ${EcoRide.renderStars(parseFloat(t.avg_rating).toFixed(1))}
+              <div style="font-size:.82rem;color:var(--text-muted)">${t.review_count} avis</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Véhicule -->
+        <div class="card mb-2">
+          <div class="card-header"><h3>🚗 Le véhicule</h3></div>
+          <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+            <div style="font-size:2.5rem">🚙</div>
+            <div>
+              <div style="font-weight:700;font-size:1.05rem">${t.brand} ${t.model}</div>
+              <div style="color:var(--text-muted);font-size:.88rem">Couleur : ${t.color}</div>
+              <span class="vehicle-energy ${energyClass[t.energy] || ''}" style="margin-top:.4rem;display:inline-flex">
+                ${energyLabels[t.energy] || t.energy}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Préférences -->
+        <div class="card mb-2">
+          <div class="card-header"><h3>⚙️ Préférences du conducteur</h3></div>
+          <div class="preferences-grid">
+            <div class="pref-item ${t.smoking ? 'pref-allowed' : 'pref-forbidden'}">
+              <span class="icon">${t.smoking ? '✅' : '🚫'}</span>
+              <span>Fumeur ${t.smoking ? 'accepté' : 'non accepté'}</span>
+            </div>
+            <div class="pref-item ${t.animals ? 'pref-allowed' : 'pref-forbidden'}">
+              <span class="icon">${t.animals ? '✅' : '🚫'}</span>
+              <span>Animaux ${t.animals ? 'acceptés' : 'non acceptés'}</span>
+            </div>
+            <div class="pref-item ${t.music ? 'pref-allowed' : 'pref-forbidden'}">
+              <span class="icon">${t.music ? '🎵' : '🔇'}</span>
+              <span>Musique ${t.music ? 'autorisée' : 'non autorisée'}</span>
+            </div>
+            <div class="pref-item ${t.chat ? 'pref-allowed' : 'pref-forbidden'}">
+              <span class="icon">${t.chat ? '💬' : '🤫'}</span>
+              <span>Discussion ${t.chat ? 'souhaitée' : 'non souhaitée'}</span>
+            </div>
+          </div>
+          ${t.other_preferences ? `<p style="margin-top:.75rem;font-size:.9rem;color:var(--text-muted)">💬 ${t.other_preferences}</p>` : ''}
+        </div>
+
+        <!-- Avis -->
+        <div class="card">
+          <div class="card-header"><h3>⭐ Avis des passagers</h3></div>
+          ${data.reviews.length === 0
+            ? '<p class="text-muted">Aucun avis pour le moment.</p>'
+            : data.reviews.map(r => `
+              <div class="review-item">
+                <img src="assets/avatars/${r.photo || 'default-avatar.png'}" alt="${r.reviewer_pseudo}"
+                     class="driver-avatar-sm" onerror="this.src='assets/avatars/default-avatar.png'">
+                <div class="review-content">
+                  <div class="reviewer">${r.reviewer_pseudo}
+                    <span class="star-rating" style="margin-left:.5rem">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                  </div>
+                  <div class="date">${EcoRide.formatDate(r.created_at)}</div>
+                  <div class="comment">${r.comment || ''}</div>
+                </div>
+              </div>`).join('')
+          }
+        </div>
+      </div>
+
+      <!-- =================== SIDEBAR =================== -->
+      <div>
+        <div class="card" style="position:sticky;top:80px">
+          <div style="font-size:2.5rem;font-weight:800;color:var(--primary);margin-bottom:.25rem">
+            ${parseFloat(t.price).toFixed(2)} €
+          </div>
+          <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem">par personne</div>
+          <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;font-size:.9rem">
+            <div class="flex-between"><span>Places disponibles</span><strong>${t.available_seats}</strong></div>
+            <div class="flex-between"><span>Date</span><strong>${EcoRide.formatDate(t.departure_datetime)}</strong></div>
+            <div class="flex-between"><span>Départ</span><strong>${EcoRide.formatTime(t.departure_datetime)}</strong></div>
+            ${t.arrival_datetime ? `<div class="flex-between"><span>Arrivée prévue</span><strong>${EcoRide.formatTime(t.arrival_datetime)}</strong></div>` : ''}
+            <div class="flex-between"><span>Statut</span><span class="badge badge-${t.status}">${t.status === 'active' ? 'Disponible' : t.status}</span></div>
+          </div>
+
+          ${canBook
+            ? `<button class="btn btn-primary btn-lg w-full" id="bookBtn">🪙 Participer — ${parseFloat(t.price).toFixed(2)} crédits</button>`
+            : !user
+              ? `<a href="login.html" class="btn btn-outline btn-lg w-full">Se connecter pour réserver</a>`
+              : `<button class="btn btn-primary btn-lg w-full" disabled>Indisponible</button>`
+          }
+          <p style="font-size:.78rem;color:var(--text-muted);text-align:center;margin-top:.75rem">
+            2 crédits de commission EcoRide inclus
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Gestion réservation
+  document.getElementById('bookBtn')?.addEventListener('click', () => {
+    const user = EcoRide.getAuthState();
+    document.getElementById('modalPrice').textContent    = `${parseFloat(t.price).toFixed(2)} crédits`;
+    document.getElementById('modalCredits').textContent  = user.credits;
+    document.getElementById('modalRemaining').textContent= `${user.credits - parseFloat(t.price)} crédits`;
+    EcoRide.openModal('bookModal');
+  });
+
+  document.getElementById('confirmBookBtn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('confirmBookBtn');
+    btn.disabled    = true;
+    btn.textContent = 'Réservation…';
+    const res = await EcoRide.apiRequest('php/trips.php', 'POST', { action: 'book', trip_id: id });
+    btn.disabled    = false;
+    btn.textContent = 'Confirmer';
+    EcoRide.closeModal('bookModal');
+    if (res.success) {
+      const user = EcoRide.getAuthState();
+      if (user) { user.credits = res.new_credits; EcoRide.setAuthState(user); EcoRide.updateNavAuth(); }
+      EcoRide.showAlert(document.getElementById('alertZone'), 'success', res.message);
+      document.getElementById('bookBtn').disabled    = true;
+      document.getElementById('bookBtn').textContent = '✅ Réservé';
+    } else {
+      EcoRide.showAlert(document.getElementById('alertZone'), 'error', res.message);
+    }
+  });
+});
+</script>
+</body>
+</html>

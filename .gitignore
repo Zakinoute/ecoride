@@ -1,0 +1,23 @@
+# Dépendances Composer
+/vendor/
+
+# Variables d'environnement
+.env
+.env.local
+
+# Logs
+*.log
+/logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Docker volumes (générés localement)
+mysql_data/
+mongo_data/

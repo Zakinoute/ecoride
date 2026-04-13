@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laisser un avis – EcoRide</title>
+  <style>
+:root{--primary:#2E7D32;--primary-light:#4CAF50;--primary-lighter:#81C784;--primary-pale:#C8E6C9;--accent:#8BC34A;--eco-badge:#00897B;--background:#F1F8E9;--surface:#FFFFFF;--surface-alt:#F9FBF7;--text-primary:#1B5E20;--text-secondary:#388E3C;--text-muted:#78909C;--text-dark:#263238;--error:#C62828;--border:#C8E6C9;--shadow:rgba(46,125,50,0.12);--shadow-md:rgba(46,125,50,0.20);--radius:10px;--radius-sm:6px;--radius-lg:16px;--transition:all 0.2s ease;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;font-size:16px}body{font-family:var(--font);background:var(--background);color:var(--text-dark);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}img{max-width:100%;height:auto;display:block}a{color:var(--primary);text-decoration:none;transition:var(--transition)}a:hover{color:var(--primary-light)}ul{list-style:none}button,input,select,textarea{font-family:inherit}
+.site-header{background:var(--primary);box-shadow:0 2px 8px var(--shadow-md);position:sticky;top:0;z-index:1000}.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:1.4rem;font-weight:700}.nav-links{display:flex;align-items:center;gap:.25rem}.nav-links a{color:rgba(255,255,255,.88);padding:.4rem .85rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:500;transition:var(--transition)}.nav-links a:hover{color:#fff;background:rgba(255,255,255,.18)}.nav-credits{display:flex;align-items:center;gap:.4rem;color:#fff;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:.3rem .75rem;border-radius:20px;margin-left:.5rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}.form-group label{font-size:.85rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}.form-group textarea{padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-dark);font-size:.95rem;resize:vertical;min-height:100px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;white-space:nowrap;text-decoration:none}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover{background:var(--primary-light);border-color:var(--primary-light);color:#fff}.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}.btn-sm{padding:.4rem .9rem;font-size:.85rem}.btn-lg{padding:.85rem 2rem;font-size:1.05rem}.btn:disabled{opacity:.5;cursor:not-allowed}
+.card{background:var(--surface);border-radius:var(--radius);padding:1.5rem;box-shadow:0 2px 12px var(--shadow);border:1px solid var(--border)}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}.card-header h3{color:var(--primary);font-size:1.05rem}
+.container{max-width:1200px;margin:0 auto;padding:0 1.5rem}.section{padding:3rem 0}
+.alert{padding:.85rem 1.25rem;border-radius:var(--radius-sm);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}.alert-success{background:#E8F5E9;color:#1B5E20;border-left:4px solid var(--primary)}.alert-error{background:#FFEBEE;color:#B71C1C;border-left:4px solid var(--error)}
+.star-picker{display:flex;gap:.25rem;margin:.5rem 0}.star-picker input{display:none}.star-picker label{font-size:2rem;cursor:pointer;color:#ddd;transition:color .1s}.star-picker input:checked~label,.star-picker label:hover,.star-picker label:hover~label{color:#F9A825}.star-picker{flex-direction:row-reverse}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.hidden{display:none!important}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="../index.html" class="nav-logo"><span class="leaf-icon">🌿</span> EcoRide</a>
+    <ul class="nav-links">
+      <li><span class="nav-credits">🪙 <span id="navCredits">—</span></span></li>
+      <li><a href="my-trips.html">Mes trajets</a></li>
+      <li><a href="#" class="logout-btn" data-base="../">Déconnexion</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="container section">
+  <a href="my-trips.html" class="btn btn-outline btn-sm mb-3">← Retour à mes trajets</a>
+
+  <div style="max-width:560px;margin:0 auto">
+    <div class="card">
+      <div class="card-header">
+        <h3>⭐ Laisser un avis</h3>
+      </div>
+
+      <div id="driverInfoDiv" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding:1rem;background:var(--background);border-radius:8px">
+        <img src="../assets/avatars/default-avatar.png" alt="Conducteur"
+             style="width:56px;height:56px;border-radius:50%;border:3px solid var(--primary-pale)"
+             id="driverAvatar">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem" id="driverPseudo">—</div>
+          <div style="color:var(--text-muted);font-size:.85rem">Conducteur de ce trajet</div>
+        </div>
+      </div>
+
+      <div id="alertZone"></div>
+
+      <form id="reviewForm" style="display:flex;flex-direction:column;gap:1.25rem">
+        <div class="form-group">
+          <label>Votre note *</label>
+          <div class="star-picker" id="starPicker">
+            <input type="radio" name="rating" id="star5" value="5">
+            <label for="star5" title="Excellent">★</label>
+            <input type="radio" name="rating" id="star4" value="4">
+            <label for="star4" title="Bien">★</label>
+            <input type="radio" name="rating" id="star3" value="3">
+            <label for="star3" title="Moyen">★</label>
+            <input type="radio" name="rating" id="star2" value="2">
+            <label for="star2" title="Mauvais">★</label>
+            <input type="radio" name="rating" id="star1" value="1">
+            <label for="star1" title="Très mauvais">★</label>
+          </div>
+          <small class="text-muted" id="ratingLabel">Cliquez pour noter</small>
+        </div>
+
+        <div class="form-group">
+          <label for="comment">Votre commentaire (optionnel)</label>
+          <textarea id="comment" name="comment" rows="4"
+                    placeholder="Partagez votre expérience de voyage avec cette personne…" maxlength="500"></textarea>
+          <small class="text-muted"><span id="charCount">0</span>/500 caractères</small>
+        </div>
+
+        <div style="background:var(--background);border-radius:8px;padding:.85rem;font-size:.85rem;color:var(--text-secondary)">
+          📋 Votre avis sera soumis à notre équipe de modération avant publication. Il peut prendre 24-48h pour être visible.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Envoyer mon avis</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+window.API_BASE = '../php/';
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = EcoRide.getAuthState();
+  if (!user) { window.location.href = '../login.html'; return; }
+  document.getElementById('navCredits').textContent = user.credits ?? '—';
+
+  const params   = new URLSearchParams(window.location.search);
+  const tripId   = params.get('trip_id');
+  const driverId = params.get('driver_id');
+
+  if (!tripId || !driverId) {
+    document.getElementById('alertZone').innerHTML = '<div class="alert alert-error">❌ Paramètres manquants.</div>';
+    return;
+  }
+
+  // Charger infos conducteur
+  const reviewData = await EcoRide.apiRequest('../php/reviews.php', 'GET', { action: 'driver', driver_id: driverId });
+  // (On utilise la liste des avis pour afficher le pseudo — en production, faire un endpoint dédié)
+
+  // Compteur de caractères
+  const comment   = document.getElementById('comment');
+  const charCount = document.getElementById('charCount');
+  comment.addEventListener('input', () => { charCount.textContent = comment.value.length; });
+
+  // Labels notes
+  const ratingLabels = { 1: 'Très mauvais 😞', 2: 'Mauvais 😐', 3: 'Moyen 🙂', 4: 'Bien 😊', 5: 'Excellent ! 🤩' };
+  document.querySelectorAll('.star-picker input').forEach(input => {
+    input.addEventListener('change', () => {
+      document.getElementById('ratingLabel').textContent = ratingLabels[input.value] || '';
+    });
+  });
+
+  // Soumission
+  document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const rating = document.querySelector('.star-picker input:checked')?.value;
+    if (!rating) {
+      EcoRide.showAlert(document.getElementById('alertZone'), 'error', 'Veuillez choisir une note.');
+      return;
+    }
+    const btn = e.target.querySelector('[type=submit]');
+    btn.disabled    = true;
+    btn.textContent = 'Envoi…';
+
+    const res = await EcoRide.apiRequest('../php/reviews.php', 'POST', {
+      action: 'submit',
+      trip_id: tripId,
+      rating,
+      comment: document.getElementById('comment').value,
+    });
+    btn.disabled    = false;
+    btn.textContent = 'Envoyer mon avis';
+
+    if (res.success) {
+      EcoRide.showAlert(document.getElementById('alertZone'), 'success', res.message);
+      e.target.querySelector('button').disabled = true;
+      setTimeout(() => window.location.href = 'my-trips.html', 2500);
+    } else {
+      EcoRide.showAlert(document.getElementById('alertZone'), 'error', res.message);
+    }
+  });
+});
+</script>
+</body>
+</html>

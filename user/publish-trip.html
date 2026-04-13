@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publier un trajet – EcoRide</title>
+  <style>
+:root{--primary:#2E7D32;--primary-light:#4CAF50;--primary-lighter:#81C784;--primary-pale:#C8E6C9;--accent:#8BC34A;--eco-badge:#00897B;--background:#F1F8E9;--surface:#FFFFFF;--surface-alt:#F9FBF7;--text-primary:#1B5E20;--text-secondary:#388E3C;--text-muted:#78909C;--text-dark:#263238;--error:#C62828;--border:#C8E6C9;--shadow:rgba(46,125,50,0.12);--shadow-md:rgba(46,125,50,0.20);--radius:10px;--radius-sm:6px;--radius-lg:16px;--transition:all 0.2s ease;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;font-size:16px}body{font-family:var(--font);background:var(--background);color:var(--text-dark);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}img{max-width:100%;height:auto;display:block}a{color:var(--primary);text-decoration:none;transition:var(--transition)}a:hover{color:var(--primary-light)}ul{list-style:none}button,input,select,textarea{font-family:inherit}
+.site-header{background:var(--primary);box-shadow:0 2px 8px var(--shadow-md);position:sticky;top:0;z-index:1000}.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:1.4rem;font-weight:700}.nav-links{display:flex;align-items:center;gap:.25rem}.nav-links a{color:rgba(255,255,255,.88);padding:.4rem .85rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:500;transition:var(--transition)}.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(255,255,255,.18)}.nav-credits{display:flex;align-items:center;gap:.4rem;color:#fff;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:.3rem .75rem;border-radius:20px;margin-left:.5rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}.form-group label{font-size:.85rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}.form-group input,.form-group select,.form-group textarea{padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-dark);font-size:.95rem;transition:var(--transition)}.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(76,175,80,.15)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;white-space:nowrap;text-decoration:none}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover{background:var(--primary-light);border-color:var(--primary-light);color:#fff}.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}.btn-sm{padding:.4rem .9rem;font-size:.85rem}.btn-lg{padding:.85rem 2rem;font-size:1.05rem}.btn:disabled{opacity:.5;cursor:not-allowed}.w-full{width:100%}
+.alert{padding:.85rem 1.25rem;border-radius:var(--radius-sm);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}.alert-success{background:#E8F5E9;color:#1B5E20;border-left:4px solid var(--primary)}.alert-error{background:#FFEBEE;color:#B71C1C;border-left:4px solid var(--error)}.alert-warning{background:#FFF8E1;color:#E65100;border-left:4px solid #FF8F00}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.hidden{display:none!important}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mt-1{margin-top:.5rem}
+.dashboard-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px)}@media(max-width:900px){.dashboard-layout{grid-template-columns:1fr}.sidebar{display:none}.sidebar.open{display:flex}}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 0;display:flex;flex-direction:column;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}.sidebar-user{padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1rem}.sidebar-user .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-pale);margin-bottom:.6rem}.sidebar-user .name{font-weight:700;font-size:1rem;color:var(--text-primary)}.sidebar-credits{display:flex;align-items:center;gap:.4rem;background:var(--primary-pale);color:var(--primary);padding:.35rem .75rem;border-radius:20px;font-size:.85rem;font-weight:700;margin-top:.5rem;width:fit-content}
+.sidebar-nav{flex:1}.sidebar-nav-section{padding:.5rem 1.25rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-top:.5rem}.sidebar-nav a{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;color:var(--text-dark);font-size:.93rem;font-weight:500;transition:all .15s;border-left:3px solid transparent}.sidebar-nav a:hover{background:var(--background);color:var(--primary)}.sidebar-nav a.active{background:var(--background);color:var(--primary);border-left-color:var(--primary);font-weight:600}.sidebar-nav a .nav-icon{font-size:1.15rem;width:22px;text-align:center}.sidebar-logout{padding:1.25rem;border-top:1px solid var(--border);margin-top:auto}
+.dashboard-main{padding:2rem;overflow-y:auto;background:var(--background)}@media(max-width:640px){.dashboard-main{padding:1rem}}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}.page-header h1{font-size:1.6rem;font-weight:800;color:var(--primary)}.page-header .breadcrumb{font-size:.85rem;color:var(--text-muted);margin-top:.15rem}
+.form-panel{background:var(--surface);border-radius:var(--radius);padding:2rem;border:1px solid var(--border);box-shadow:0 2px 8px var(--shadow);margin-bottom:1.5rem}.form-panel h2{color:var(--primary);font-size:1.15rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--primary-pale)}.form-panel form{display:flex;flex-direction:column;gap:1rem}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="../index.html" class="nav-logo"><span class="leaf-icon">🌿</span> EcoRide</a>
+    <ul class="nav-links">
+      <li><span class="nav-credits">🪙 <span id="navCredits">—</span></span></li>
+      <li><a href="#" class="logout-btn" data-base="../">Déconnexion</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <img src="../assets/avatars/default-avatar.png" class="avatar">
+      <div class="name" id="sidebarPseudo">—</div>
+      <div class="sidebar-credits">🪙 <span id="sidebarCredits">—</span> crédits</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">Mon espace</div>
+      <a href="dashboard.html"><span class="nav-icon">🏠</span> Tableau de bord</a>
+      <a href="profile.html"><span class="nav-icon">👤</span> Mon profil</a>
+      <a href="my-trips.html"><span class="nav-icon">🗓️</span> Mes trajets</a>
+      <div class="sidebar-nav-section">Conducteur</div>
+      <a href="vehicles.html"><span class="nav-icon">🚗</span> Mes véhicules</a>
+      <a href="publish-trip.html" class="active"><span class="nav-icon">➕</span> Publier un trajet</a>
+    </nav>
+    <div class="sidebar-logout">
+      <a href="#" class="btn btn-outline w-full logout-btn" data-base="../">Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header">
+      <div><h1>Publier un trajet</h1><div class="breadcrumb">Proposer un covoiturage</div></div>
+    </div>
+
+    <!-- Alerte si pas conducteur -->
+    <div id="notDriverAlert" class="hidden">
+      <div class="alert alert-warning">
+        ⚠️ Vous devez d'abord activer le statut <strong>Conducteur</strong> depuis votre tableau de bord et ajouter au moins un véhicule.
+        <a href="dashboard.html" class="btn btn-sm btn-outline" style="margin-left:1rem">Aller au tableau de bord</a>
+      </div>
+    </div>
+
+    <div class="form-panel" id="publishForm">
+      <h2>🚗 Informations du trajet</h2>
+      <div id="publishAlert"></div>
+      <form id="tripForm">
+        <!-- Adresses -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="departure_city">Ville de départ *</label>
+            <input type="text" id="departure_city" name="departure_city" required placeholder="Ex : Paris">
+          </div>
+          <div class="form-group">
+            <label for="arrival_city">Ville d'arrivée *</label>
+            <input type="text" id="arrival_city" name="arrival_city" required placeholder="Ex : Lyon">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="departure_address">Adresse de départ *</label>
+            <input type="text" id="departure_address" name="departure_address" required placeholder="Ex : 12 Rue de la Paix">
+          </div>
+          <div class="form-group">
+            <label for="arrival_address">Adresse d'arrivée *</label>
+            <input type="text" id="arrival_address" name="arrival_address" required placeholder="Ex : 5 Avenue Berthelot">
+          </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="departure_datetime">Date et heure de départ *</label>
+            <input type="datetime-local" id="departure_datetime" name="departure_datetime" required>
+          </div>
+          <div class="form-group">
+            <label for="arrival_datetime">Date et heure d'arrivée estimées</label>
+            <input type="datetime-local" id="arrival_datetime" name="arrival_datetime">
+          </div>
+        </div>
+
+        <!-- Prix et places -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="price">Prix par passager (en crédits) *</label>
+            <input type="number" id="price" name="price" required min="1" max="200" step="0.5" placeholder="Ex : 15">
+            <small class="text-muted">EcoRide prélève 2 crédits de commission par réservation.</small>
+          </div>
+          <div class="form-group">
+            <label for="seats">Nombre de places proposées *</label>
+            <input type="number" id="seats" name="seats" required min="1" max="7" value="3">
+          </div>
+        </div>
+
+        <!-- Véhicule -->
+        <div class="form-group">
+          <label for="vehicle_id">Véhicule *</label>
+          <select id="vehicle_id" name="vehicle_id" required>
+            <option value="">-- Choisir un véhicule --</option>
+          </select>
+        </div>
+
+        <div style="background:var(--background);border-radius:8px;padding:1rem;font-size:.88rem;color:var(--text-secondary);margin-top:.5rem">
+          💡 <strong>Rappel :</strong> En publiant ce trajet, vous vous engagez à respecter l'itinéraire annoncé. En cas d'annulation, les passagers seront remboursés automatiquement.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem">Publier le trajet</button>
+      </form>
+    </div>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+window.API_BASE = '../php/';
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = EcoRide.getAuthState();
+  if (!user) { window.location.href = '../login.html'; return; }
+
+  document.getElementById('sidebarPseudo').textContent  = user.pseudo;
+  document.getElementById('sidebarCredits').textContent = user.credits ?? '—';
+  document.getElementById('navCredits').textContent     = user.credits ?? '—';
+
+  // Vérifier que l'utilisateur est conducteur
+  const me = await EcoRide.apiRequest('../php/auth.php', 'GET', { action: 'me' });
+  if (me.success && !me.user.is_driver) {
+    document.getElementById('notDriverAlert').classList.remove('hidden');
+    document.getElementById('publishForm').style.display = 'none';
+    return;
+  }
+
+  // Charger les véhicules
+  const vdata = await EcoRide.apiRequest('../php/vehicles.php', 'GET', { action: 'list' });
+  const sel   = document.getElementById('vehicle_id');
+  if (vdata.success && vdata.vehicles.length > 0) {
+    vdata.vehicles.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value       = v.id;
+      opt.textContent = `${v.brand} ${v.model} (${v.plate}) — ${v.energy}`;
+      sel.appendChild(opt);
+    });
+  } else {
+    sel.innerHTML = '<option value="">Aucun véhicule — <a href="vehicles.html">en ajouter un</a></option>';
+  }
+
+  // Date minimum = maintenant
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  document.getElementById('departure_datetime').min = now.toISOString().slice(0,16);
+
+  // Soumission
+  document.getElementById('tripForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type=submit]');
+    btn.disabled    = true;
+    btn.textContent = 'Publication…';
+
+    const fd = new FormData(e.target);
+    fd.append('action', 'create');
+    const res = await EcoRide.apiRequest('../php/trips.php', 'POST', fd);
+    btn.disabled    = false;
+    btn.textContent = 'Publier le trajet';
+
+    if (res.success) {
+      EcoRide.showAlert(document.getElementById('publishAlert'), 'success', res.message);
+      e.target.reset();
+      setTimeout(() => window.location.href = 'my-trips.html', 1500);
+    } else {
+      EcoRide.showAlert(document.getElementById('publishAlert'), 'error', res.message);
+    }
+  });
+});
+</script>
+</body>
+</html>

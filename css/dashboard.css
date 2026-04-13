@@ -1,0 +1,379 @@
+/* ============================================================
+   EcoRide - Styles Dashboard (Espace utilisateur / employé / admin)
+   ============================================================ */
+
+/* Layout principal dashboard */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 64px);
+}
+@media (max-width: 900px) {
+  .dashboard-layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .sidebar.open { display: flex; }
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+.sidebar-user {
+  padding: 0 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+.sidebar-user .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-pale);
+  margin-bottom: 0.6rem;
+}
+.sidebar-user .name { font-weight: 700; font-size: 1rem; color: var(--text-primary); }
+.sidebar-user .role { font-size: 0.8rem; color: var(--text-muted); text-transform: capitalize; }
+.sidebar-credits {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--primary-pale);
+  color: var(--primary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  width: fit-content;
+}
+
+.sidebar-nav { flex: 1; }
+.sidebar-nav-section {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1.25rem;
+  color: var(--text-dark);
+  font-size: 0.93rem;
+  font-weight: 500;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-nav a:hover { background: var(--background); color: var(--primary); }
+.sidebar-nav a.active {
+  background: var(--background);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 600;
+}
+.sidebar-nav a .nav-icon { font-size: 1.15rem; width: 22px; text-align: center; }
+.sidebar-logout {
+  padding: 1.25rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* Main content */
+.dashboard-main {
+  padding: 2rem 2rem;
+  overflow-y: auto;
+  background: var(--background);
+}
+@media (max-width: 640px) { .dashboard-main { padding: 1rem; } }
+
+/* Page header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+.page-header .breadcrumb {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* Stats cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.stat-icon.green  { background: #E8F5E9; }
+.stat-icon.teal   { background: #E0F2F1; }
+.stat-icon.amber  { background: #FFF8E1; }
+.stat-icon.blue   { background: #E3F2FD; }
+.stat-value { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1; }
+.stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+/* Charts */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 800px) { .charts-grid { grid-template-columns: 1fr; } }
+.chart-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.chart-card h3 { color: var(--primary); margin-bottom: 1.25rem; font-size: 1rem; }
+.chart-container { position: relative; height: 240px; }
+
+/* Tables */
+.data-table {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
+  overflow: hidden;
+}
+.data-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-alt);
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.data-table-header h3 { color: var(--primary); font-size: 1rem; }
+.data-table table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  background: var(--background);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--background); }
+.data-table-scroll { overflow-x: auto; }
+
+/* Form panels */
+.form-panel {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px var(--shadow);
+  margin-bottom: 1.5rem;
+}
+.form-panel h2 {
+  color: var(--primary);
+  font-size: 1.15rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--primary-pale);
+}
+.form-panel form { display: flex; flex-direction: column; gap: 1rem; }
+
+/* Toggle switch */
+.toggle-switch { position: relative; display: inline-flex; align-items: center; cursor: pointer; gap: 0.6rem; }
+.toggle-switch input { display: none; }
+.toggle-track {
+  width: 44px; height: 24px;
+  background: #ccc;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-switch input:checked + .toggle-track { background: var(--primary); }
+.toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); }
+.toggle-label { font-size: 0.9rem; font-weight: 500; }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 2rem; }
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+.tab-btn:hover { color: var(--primary); }
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Vehicle card */
+.vehicle-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  box-shadow: 0 1px 4px var(--shadow);
+}
+.vehicle-icon { font-size: 2rem; }
+.vehicle-info { flex: 1; }
+.vehicle-info .name { font-weight: 700; color: var(--text-primary); }
+.vehicle-info .details { font-size: 0.85rem; color: var(--text-muted); }
+.vehicle-energy {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.energy-electrique { background: #E0F2F1; color: var(--eco-badge); }
+.energy-hybride    { background: #E8F5E9; color: var(--primary); }
+.energy-essence    { background: #FFF8E1; color: #E65100; }
+.energy-diesel     { background: #ECEFF1; color: #546E7A; }
+
+/* Trip history item */
+.trip-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.trip-history-route { font-weight: 700; color: var(--text-primary); }
+.trip-history-meta  { font-size: 0.85rem; color: var(--text-muted); }
+.trip-history-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* Notification dot */
+.notif-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--warning);
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* Status badge in table */
+.status-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.status-dot.active    { background: var(--primary); }
+.status-dot.suspended { background: var(--error); }
+
+/* Search bar in table header */
+.table-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.table-search input {
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  background: var(--surface);
+  color: var(--text-dark);
+  min-width: 200px;
+}
+.table-search input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+}
+
+/* Mobile menu toggle for dashboard */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 999;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 16px var(--shadow-md);
+}
+@media (max-width: 900px) { .sidebar-toggle { display: flex; align-items: center; justify-content: center; } }
+
+/* Progress bar for seats */
+.seats-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.seats-bar-fill { height: 100%; background: var(--primary-light); border-radius: 3px; transition: width 0.3s; }

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes véhicules – EcoRide</title>
+  <style>
+:root{--primary:#2E7D32;--primary-light:#4CAF50;--primary-lighter:#81C784;--primary-pale:#C8E6C9;--accent:#8BC34A;--eco-badge:#00897B;--background:#F1F8E9;--surface:#FFFFFF;--surface-alt:#F9FBF7;--text-primary:#1B5E20;--text-secondary:#388E3C;--text-muted:#78909C;--text-dark:#263238;--warning:#F57C00;--error:#C62828;--border:#C8E6C9;--shadow:rgba(46,125,50,0.12);--shadow-md:rgba(46,125,50,0.20);--radius:10px;--radius-sm:6px;--radius-lg:16px;--transition:all 0.2s ease;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;font-size:16px}body{font-family:var(--font);background:var(--background);color:var(--text-dark);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}img{max-width:100%;height:auto;display:block}a{color:var(--primary);text-decoration:none;transition:var(--transition)}a:hover{color:var(--primary-light)}ul{list-style:none}button,input,select,textarea{font-family:inherit}
+.site-header{background:var(--primary);box-shadow:0 2px 8px var(--shadow-md);position:sticky;top:0;z-index:1000}.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:1.4rem;font-weight:700}.nav-links{display:flex;align-items:center;gap:.25rem}.nav-links a{color:rgba(255,255,255,.88);padding:.4rem .85rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:500;transition:var(--transition)}.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(255,255,255,.18)}.nav-credits{display:flex;align-items:center;gap:.4rem;color:#fff;font-weight:600;font-size:.9rem;background:rgba(255,255,255,.15);padding:.3rem .75rem;border-radius:20px;margin-left:.5rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}.form-group label{font-size:.85rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}.form-group input,.form-group select,.form-group textarea{padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-dark);font-size:.95rem;transition:var(--transition)}.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(76,175,80,.15)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;white-space:nowrap;text-decoration:none}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover{background:var(--primary-light);border-color:var(--primary-light);color:#fff}.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}.btn-danger{background:var(--error);color:#fff;border-color:var(--error)}.btn-danger:hover{background:#B71C1C}.btn-sm{padding:.4rem .9rem;font-size:.85rem}.btn:disabled{opacity:.5;cursor:not-allowed}.w-full{width:100%}
+.alert{padding:.85rem 1.25rem;border-radius:var(--radius-sm);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}.alert-success{background:#E8F5E9;color:#1B5E20;border-left:4px solid var(--primary)}.alert-error{background:#FFEBEE;color:#B71C1C;border-left:4px solid var(--error)}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.hidden{display:none!important}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mt-1{margin-top:.5rem}.mt-3{margin-top:1.5rem}.w-full{width:100%}.empty-state{text-align:center;padding:3rem 1rem;color:var(--text-muted)}.empty-state .icon{font-size:3rem;margin-bottom:1rem}.empty-state h3{margin-bottom:.5rem;color:var(--text-secondary)}
+.dashboard-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px)}@media(max-width:900px){.dashboard-layout{grid-template-columns:1fr}.sidebar{display:none}.sidebar.open{display:flex}}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 0;display:flex;flex-direction:column;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}.sidebar-user{padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1rem}.sidebar-user .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-pale);margin-bottom:.6rem}.sidebar-user .name{font-weight:700;font-size:1rem;color:var(--text-primary)}.sidebar-credits{display:flex;align-items:center;gap:.4rem;background:var(--primary-pale);color:var(--primary);padding:.35rem .75rem;border-radius:20px;font-size:.85rem;font-weight:700;margin-top:.5rem;width:fit-content}
+.sidebar-nav{flex:1}.sidebar-nav-section{padding:.5rem 1.25rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-top:.5rem}.sidebar-nav a{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.25rem;color:var(--text-dark);font-size:.93rem;font-weight:500;transition:all .15s;border-left:3px solid transparent}.sidebar-nav a:hover{background:var(--background);color:var(--primary)}.sidebar-nav a.active{background:var(--background);color:var(--primary);border-left-color:var(--primary);font-weight:600}.sidebar-nav a .nav-icon{font-size:1.15rem;width:22px;text-align:center}.sidebar-logout{padding:1.25rem;border-top:1px solid var(--border);margin-top:auto}
+.dashboard-main{padding:2rem;overflow-y:auto;background:var(--background)}@media(max-width:640px){.dashboard-main{padding:1rem}}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}.page-header h1{font-size:1.6rem;font-weight:800;color:var(--primary)}.page-header .breadcrumb{font-size:.85rem;color:var(--text-muted);margin-top:.15rem}
+.form-panel{background:var(--surface);border-radius:var(--radius);padding:2rem;border:1px solid var(--border);box-shadow:0 2px 8px var(--shadow);margin-bottom:1.5rem}.form-panel h2{color:var(--primary);font-size:1.15rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--primary-pale)}.form-panel form{display:flex;flex-direction:column;gap:1rem}
+.vehicle-card{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;box-shadow:0 1px 4px var(--shadow)}.vehicle-icon{font-size:2rem}.vehicle-info{flex:1}.vehicle-info .name{font-weight:700;color:var(--text-primary)}.vehicle-info .details{font-size:.85rem;color:var(--text-muted)}.vehicle-energy{display:flex;align-items:center;gap:.3rem;font-size:.82rem;padding:.2rem .6rem;border-radius:20px}.energy-electrique{background:#E0F2F1;color:var(--eco-badge)}.energy-hybride{background:#E8F5E9;color:var(--primary)}.energy-essence{background:#FFF8E1;color:#E65100}.energy-diesel{background:#ECEFF1;color:#546E7A}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="../index.html" class="nav-logo"><span class="leaf-icon">🌿</span> EcoRide</a>
+    <ul class="nav-links">
+      <li><span class="nav-credits">🪙 <span id="navCredits">—</span></span></li>
+      <li><a href="#" class="logout-btn" data-base="../">Déconnexion</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="dashboard-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <img src="../assets/avatars/default-avatar.png" class="avatar">
+      <div class="name" id="sidebarPseudo">—</div>
+      <div class="sidebar-credits">🪙 <span id="sidebarCredits">—</span> crédits</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-nav-section">Mon espace</div>
+      <a href="dashboard.html"><span class="nav-icon">🏠</span> Tableau de bord</a>
+      <a href="profile.html"><span class="nav-icon">👤</span> Mon profil</a>
+      <a href="my-trips.html"><span class="nav-icon">🗓️</span> Mes trajets</a>
+      <div class="sidebar-nav-section">Conducteur</div>
+      <a href="vehicles.html" class="active"><span class="nav-icon">🚗</span> Mes véhicules</a>
+      <a href="publish-trip.html"><span class="nav-icon">➕</span> Publier un trajet</a>
+    </nav>
+    <div class="sidebar-logout">
+      <a href="#" class="btn btn-outline w-full logout-btn" data-base="../">Déconnexion</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header">
+      <div><h1>Mes véhicules</h1><div class="breadcrumb">Gérez votre parc automobile</div></div>
+      <button class="btn btn-primary" onclick="EcoRide.openModal('addVehicleModal')">+ Ajouter un véhicule</button>
+    </div>
+
+    <div id="vehiclesList">
+      <div class="text-center text-muted">Chargement…</div>
+    </div>
+
+    <!-- Formulaire inline -->
+    <div class="form-panel mt-3" id="addVehicleInline" style="display:none">
+      <h2>🚗 Ajouter un véhicule</h2>
+      <div id="vehicleAlert"></div>
+      <form id="vehicleForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="brand">Marque *</label>
+            <input type="text" id="brand" name="brand" required placeholder="Ex : Renault">
+          </div>
+          <div class="form-group">
+            <label for="model">Modèle *</label>
+            <input type="text" id="model" name="model" required placeholder="Ex : Zoé">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="color">Couleur *</label>
+            <input type="text" id="color" name="color" required placeholder="Ex : Blanc">
+          </div>
+          <div class="form-group">
+            <label for="plate">Plaque d'immatriculation *</label>
+            <input type="text" id="plate" name="plate" required placeholder="Ex : AB-123-CD" maxlength="10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_registration">Date de 1ère immatriculation *</label>
+            <input type="date" id="first_registration" name="first_registration" required>
+          </div>
+          <div class="form-group">
+            <label for="seats">Nombre de places (sans le conducteur) *</label>
+            <input type="number" id="seats" name="seats" required min="1" max="8" value="4">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="energy">Type d'énergie *</label>
+          <select id="energy" name="energy" required>
+            <option value="">-- Choisir --</option>
+            <option value="electrique">⚡ Électrique</option>
+            <option value="hybride">🔋 Hybride</option>
+            <option value="essence">⛽ Essence</option>
+            <option value="diesel">🛢️ Diesel</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:.5rem">
+          <button type="submit" class="btn btn-primary">Ajouter le véhicule</button>
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('addVehicleInline').style.display='none'">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+window.API_BASE = '../php/';
+document.addEventListener('DOMContentLoaded', async () => {
+  const user = EcoRide.getAuthState();
+  if (!user) { window.location.href = '../login.html'; return; }
+
+  document.getElementById('sidebarPseudo').textContent  = user.pseudo;
+  document.getElementById('sidebarCredits').textContent = user.credits ?? '—';
+  document.getElementById('navCredits').textContent     = user.credits ?? '—';
+
+  await loadVehicles();
+
+  // Bouton ajouter
+  document.querySelector('.btn-primary[onclick]').addEventListener('click', () => {
+    document.getElementById('addVehicleInline').style.display = 'block';
+    document.getElementById('addVehicleInline').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Formulaire ajout
+  document.getElementById('vehicleForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    fd.append('action', 'add');
+    const res = await EcoRide.apiRequest('../php/vehicles.php', 'POST', fd);
+    EcoRide.showAlert(document.getElementById('vehicleAlert'), res.success ? 'success' : 'error', res.message);
+    if (res.success) {
+      e.target.reset();
+      document.getElementById('addVehicleInline').style.display = 'none';
+      await loadVehicles();
+    }
+  });
+});
+
+async function loadVehicles() {
+  const div = document.getElementById('vehiclesList');
+  div.innerHTML = '<div class="text-center text-muted">Chargement…</div>';
+  const data = await EcoRide.apiRequest('../php/vehicles.php', 'GET', { action: 'list' });
+  if (!data.success) return;
+
+  const energyLabels = { electrique: '⚡ Électrique', hybride: '🔋 Hybride', essence: '⛽ Essence', diesel: '🛢️ Diesel' };
+  const energyClass  = { electrique: 'energy-electrique', hybride: 'energy-hybride', essence: 'energy-essence', diesel: 'energy-diesel' };
+
+  if (data.vehicles.length === 0) {
+    div.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">🚗</div>
+        <h3>Aucun véhicule enregistré</h3>
+        <p>Ajoutez votre premier véhicule pour commencer à proposer des trajets.</p>
+      </div>`;
+    return;
+  }
+
+  div.innerHTML = data.vehicles.map(v => `
+    <div class="vehicle-card">
+      <div class="vehicle-icon">🚙</div>
+      <div class="vehicle-info">
+        <div class="name">${v.brand} ${v.model} <span style="font-weight:400;color:var(--text-muted)">${v.color}</span></div>
+        <div class="details">Plaque : ${v.plate} · ${v.seats} places · 1ère immat : ${EcoRide.formatDate(v.first_registration)}</div>
+        <span class="vehicle-energy ${energyClass[v.energy]} mt-1">${energyLabels[v.energy]}</span>
+      </div>
+      <button class="btn btn-danger btn-sm" data-id="${v.id}" onclick="removeVehicle(${v.id})">Supprimer</button>
+    </div>`).join('');
+}
+
+async function removeVehicle(id) {
+  if (!confirm('Supprimer ce véhicule ?')) return;
+  const res = await EcoRide.apiRequest('../php/vehicles.php', 'POST', { action: 'remove', vehicle_id: id });
+  if (res.success) loadVehicles();
+  else alert(res.message);
+}
+</script>
+</body>
+</html>

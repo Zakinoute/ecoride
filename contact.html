@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – EcoRide</title>
+  <style>
+:root{--primary:#2E7D32;--primary-light:#4CAF50;--primary-lighter:#81C784;--primary-pale:#C8E6C9;--accent:#8BC34A;--eco-badge:#00897B;--background:#F1F8E9;--surface:#FFFFFF;--surface-alt:#F9FBF7;--text-primary:#1B5E20;--text-secondary:#388E3C;--text-muted:#78909C;--text-dark:#263238;--error:#C62828;--border:#C8E6C9;--shadow:rgba(46,125,50,0.12);--shadow-md:rgba(46,125,50,0.20);--radius:10px;--radius-sm:6px;--radius-lg:16px;--transition:all 0.2s ease;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth;font-size:16px}body{font-family:var(--font);background:var(--background);color:var(--text-dark);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}img{max-width:100%;height:auto;display:block}a{color:var(--primary);text-decoration:none;transition:var(--transition)}a:hover{color:var(--primary-light)}ul{list-style:none}button,input,select,textarea{font-family:inherit}
+.site-header{background:var(--primary);box-shadow:0 2px 8px var(--shadow-md);position:sticky;top:0;z-index:1000}.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:64px}.nav-logo{display:flex;align-items:center;gap:.5rem;color:#fff;font-size:1.4rem;font-weight:700}.nav-links{display:flex;align-items:center;gap:.25rem}.nav-links a{color:rgba(255,255,255,.88);padding:.4rem .85rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:500;transition:var(--transition)}.nav-links a:hover,.nav-links a.active{color:#fff;background:rgba(255,255,255,.18)}.nav-links .btn-nav-primary{background:var(--accent);color:var(--text-primary);font-weight:600;margin-left:.5rem}.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}.burger span{width:24px;height:2px;background:#fff;border-radius:2px}
+.hero{background:linear-gradient(135deg,var(--primary) 0%,#1B5E20 60%,#33691E 100%);color:#fff;padding:5rem 1.5rem 6rem;text-align:center;position:relative;overflow:hidden}.hero-content{position:relative;max-width:700px;margin:0 auto}.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.2;margin-bottom:1rem}.hero p{font-size:1.15rem;opacity:.9;margin-bottom:2.5rem}.hero-wave{position:absolute;bottom:0;left:0;right:0;height:60px;background:var(--background);clip-path:ellipse(55% 100% at 50% 100%)}
+.form-group{display:flex;flex-direction:column;gap:.4rem}.form-group label{font-size:.85rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}.form-group input,.form-group select,.form-group textarea{padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text-dark);font-size:.95rem;transition:var(--transition)}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(76,175,80,.15)}.form-group textarea{resize:vertical;min-height:100px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.4rem;border-radius:var(--radius-sm);font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);border:2px solid transparent;white-space:nowrap;text-decoration:none}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-primary:hover{background:var(--primary-light);border-color:var(--primary-light);color:#fff}.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}.btn-lg{padding:.85rem 2rem;font-size:1.05rem}
+.card{background:var(--surface);border-radius:var(--radius);padding:1.5rem;box-shadow:0 2px 12px var(--shadow);border:1px solid var(--border);transition:var(--transition)}.card:hover{box-shadow:0 6px 24px var(--shadow-md);transform:translateY(-2px)}.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}.card-header h3{color:var(--primary);font-size:1.05rem}
+.container{max-width:1200px;margin:0 auto;padding:0 1.5rem}.section{padding:3rem 0}
+.alert{padding:.85rem 1.25rem;border-radius:var(--radius-sm);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}.alert-success{background:#E8F5E9;color:#1B5E20;border-left:4px solid var(--primary)}.alert-error{background:#FFEBEE;color:#B71C1C;border-left:4px solid var(--error)}
+.site-footer{background:#1B5E20;color:rgba(255,255,255,.85);padding:2.5rem 1.5rem 1.5rem;margin-top:auto}.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem}.footer-brand .logo{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.5rem}.footer-col h4{color:var(--primary-lighter);font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem}.footer-col a{display:block;color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:.4rem}.footer-col a:hover{color:#fff}.footer-col .contact-email{display:flex;align-items:center;gap:.5rem;color:var(--primary-lighter);font-weight:600}.footer-bottom{max-width:1200px;margin:1.5rem auto 0;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;align-items:center;font-size:.85rem;opacity:.65;flex-wrap:wrap;gap:.5rem}
+.text-center{text-align:center}.text-muted{color:var(--text-muted)}.text-primary{color:var(--primary)}.hidden{display:none!important}.flex-between{display:flex;justify-content:space-between;align-items:center}.mb-1{margin-bottom:.5rem}.mb-2{margin-bottom:1rem}.mb-3{margin-bottom:1.5rem}.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.w-full{width:100%}
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--primary);flex-direction:column;padding:1rem;gap:.25rem}.nav-links.open{display:flex}.nav-links a{width:100%;padding:.65rem 1rem}.burger{display:flex}.site-header{position:relative}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav-container">
+    <a href="index.html" class="nav-logo"><span class="leaf-icon">🌿</span> EcoRide</a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="search.html">Covoiturages</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li id="navLogin"><a href="login.html">Connexion</a></li>
+      <li id="navRegister"><a href="register.html" class="btn-nav-primary">S'inscrire</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hero" style="padding:3rem 1.5rem 4rem">
+  <div class="hero-content">
+    <h1>Contactez-nous</h1>
+    <p>Une question, une suggestion ou un problème ? Notre équipe est là pour vous aider.</p>
+  </div>
+  <div class="hero-wave"></div>
+</div>
+
+<div class="container section">
+  <div style="display:grid;grid-template-columns:1fr 400px;gap:2rem;align-items:start">
+
+    <!-- Formulaire -->
+    <div class="card">
+      <div class="card-header"><h3>📬 Envoyer un message</h3></div>
+      <div id="alertZone"></div>
+      <form id="contactForm" style="display:flex;flex-direction:column;gap:1rem">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">Prénom *</label>
+            <input type="text" id="firstName" name="firstName" required placeholder="Votre prénom">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Nom *</label>
+            <input type="text" id="lastName" name="lastName" required placeholder="Votre nom">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">Email *</label>
+          <input type="email" id="contactEmail" name="email" required placeholder="votre@email.fr">
+        </div>
+        <div class="form-group">
+          <label for="subject">Sujet *</label>
+          <select id="subject" name="subject" required>
+            <option value="">-- Choisir un sujet --</option>
+            <option value="reservation">Problème de réservation</option>
+            <option value="account">Mon compte</option>
+            <option value="driver">Problème avec un conducteur</option>
+            <option value="payment">Crédits et paiements</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" required placeholder="Décrivez votre demande en détail…" rows="6"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Envoyer le message</button>
+      </form>
+    </div>
+
+    <!-- Infos contact -->
+    <div>
+      <div class="card mb-2">
+        <div class="card-header"><h3>📍 Nos coordonnées</h3></div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div style="display:flex;gap:.75rem;align-items:flex-start">
+            <span style="font-size:1.5rem">📧</span>
+            <div>
+              <div style="font-weight:600;color:var(--primary)">Email</div>
+              <a href="mailto:contact@ecoride.fr">contact@ecoride.fr</a>
+            </div>
+          </div>
+          <div style="display:flex;gap:.75rem;align-items:flex-start">
+            <span style="font-size:1.5rem">🕐</span>
+            <div>
+              <div style="font-weight:600;color:var(--primary)">Horaires</div>
+              <div style="font-size:.9rem;color:var(--text-muted)">Lundi – Vendredi : 9h – 18h</div>
+              <div style="font-size:.9rem;color:var(--text-muted)">Samedi : 10h – 15h</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:.75rem;align-items:flex-start">
+            <span style="font-size:1.5rem">⏱️</span>
+            <div>
+              <div style="font-weight:600;color:var(--primary)">Délai de réponse</div>
+              <div style="font-size:.9rem;color:var(--text-muted)">Nous répondons sous 24 à 48h ouvrées.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>❓ FAQ rapide</h3></div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <details>
+            <summary style="cursor:pointer;font-weight:600;color:var(--primary)">Comment obtenir des crédits ?</summary>
+            <p style="margin-top:.5rem;font-size:.9rem;color:var(--text-muted)">Vous recevez 20 crédits à l'inscription. En tant que conducteur, vous gagnez des crédits à chaque trajet complété.</p>
+          </details>
+          <details>
+            <summary style="cursor:pointer;font-weight:600;color:var(--primary)">Comment annuler un trajet ?</summary>
+            <p style="margin-top:.5rem;font-size:.9rem;color:var(--text-muted)">Rendez-vous dans "Mes trajets" depuis votre espace personnel et cliquez sur "Annuler". Les passagers sont remboursés automatiquement.</p>
+          </details>
+          <details>
+            <summary style="cursor:pointer;font-weight:600;color:var(--primary)">Le badge vert signifie quoi ?</summary>
+            <p style="margin-top:.5rem;font-size:.9rem;color:var(--text-muted)">Le badge ⚡ "Voyage écologique" est attribué aux trajets effectués avec un véhicule 100% électrique.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-brand"><div class="logo">🌿 EcoRide</div></div>
+    <div class="footer-col">
+      <a href="legal.html">Mentions légales</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-col"><div class="contact-email">📧 contact@ecoride.fr</div></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 EcoRide.</span></div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+document.getElementById('contactForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const alertZone = document.getElementById('alertZone');
+  // Simulation d'envoi (pas de backend mail configuré)
+  EcoRide.showAlert(alertZone, 'success', 'Votre message a été envoyé ! Nous vous répondrons sous 24-48h.');
+  e.target.reset();
+});
+</script>
+</body>
+</html>
