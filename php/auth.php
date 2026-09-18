@@ -1,6 +1,7 @@
 <?php
 // ============================================================
 // EcoRide - Authentification (login / register / logout / me)
+// Contrôleur : la logique des comptes est dans la classe User.
 // ============================================================
 require_once 'config.php';
 startSession();
@@ -12,39 +13,19 @@ switch ($action) {
 
     // ----------------------------------------------------------
     case 'register':
-        $pseudo   = sanitize($_POST['pseudo'] ?? '');
-        $email    = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-        $password = $_POST['password'] ?? '';
+        $pseudo = sanitize($_POST['pseudo'] ?? '');
+        $email  = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 
-        if (!$pseudo || !$email || !$password) {
-            jsonResponse(false, 'Tous les champs sont obligatoires.');
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            jsonResponse(false, 'Adresse email invalide.');
-        }
-        // Politique de mot de passe : 8 car., 1 maj, 1 chiffre, 1 spécial
-        if (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
-            jsonResponse(false, 'Mot de passe trop faible. Il doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.');
-        }
+        $result = (new User())->register($pseudo, $email, $_POST['password'] ?? '');
+        if (!$result['success']) jsonResponse(false, $result['message']);
 
-        $pdo = getPDO();
-        $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ? OR pseudo = ?');
-        $stmt->execute([$email, $pseudo]);
-        if ($stmt->fetch()) {
-            jsonResponse(false, 'Ce pseudo ou email est déjà utilisé.');
-        }
-
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)');
-        $stmt->execute([$pseudo, $email, $hash]);
-        $userId = $pdo->lastInsertId();
-
-        $_SESSION['user_id'] = $userId;
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $result['id'];
         $_SESSION['pseudo']  = $pseudo;
         $_SESSION['role']    = 'user';
         $_SESSION['credits'] = 20;
 
-        jsonResponse(true, 'Compte créé avec succès ! 20 crédits offerts.', ['redirect' => 'user/dashboard.html']);
+        jsonResponse(true, $result['message'], ['redirect' => 'user/dashboard.html']);
         break;
 
     // ----------------------------------------------------------
@@ -56,17 +37,9 @@ switch ($action) {
             jsonResponse(false, 'Email et mot de passe requis.');
         }
 
-        $pdo  = getPDO();
-        $stmt = $pdo->prepare('SELECT id, pseudo, password, role, credits, status FROM users WHERE email = ?');
-        $stmt->execute([$email]);
-        $user = $stmt->fetch();
-
-        if (!$user || !password_verify($password, $user['password'])) {
-            jsonResponse(false, 'Identifiants incorrects.');
-        }
-        if ($user['status'] === 'suspended') {
-            jsonResponse(false, 'Votre compte est suspendu. Contactez l\'administration.');
-        }
+        $result = (new User())->login($email, $password);
+        if (!$result['success']) jsonResponse(false, $result['message']);
+        $user = $result['user'];
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
@@ -98,11 +71,7 @@ switch ($action) {
         if (empty($_SESSION['user_id'])) {
             jsonResponse(false, 'Non connecté.');
         }
-        $pdo  = getPDO();
-        $stmt = $pdo->prepare('SELECT id, pseudo, email, role, credits, photo, is_driver, is_passenger FROM users WHERE id = ?');
-        $stmt->execute([$_SESSION['user_id']]);
-        $user = $stmt->fetch();
-        jsonResponse(true, '', ['user' => $user]);
+        jsonResponse(true, '', ['user' => (new User())->findById((int)$_SESSION['user_id'])]);
         break;
 
     // ----------------------------------------------------------
