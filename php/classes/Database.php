@@ -2,6 +2,9 @@
 /**
  * Database — Singleton PDO (MySQL)
  * Fournit une connexion unique réutilisable dans toute l'application.
+ *
+ * Les identifiants viennent des variables d'environnement (docker-compose.yml,
+ * hébergeur). Les valeurs par défaut servent au développement local (XAMPP).
  */
 class Database
 {
@@ -13,10 +16,10 @@ class Database
     public static function getInstance(): PDO
     {
         if (self::$instance === null) {
-            $host    = $_ENV['DB_HOST']    ?? 'localhost';
-            $dbname  = $_ENV['DB_NAME']    ?? 'ecoride';
-            $user    = $_ENV['DB_USER']    ?? 'root';
-            $pass    = $_ENV['DB_PASS']    ?? '';
+            $host    = getenv('DB_HOST') ?: 'localhost';
+            $dbname  = getenv('DB_NAME') ?: 'ecoride';
+            $user    = getenv('DB_USER') ?: 'root';
+            $pass    = getenv('DB_PASS') ?: '';
             $charset = 'utf8mb4';
 
             $dsn = "mysql:host={$host};dbname={$dbname};charset={$charset}";
@@ -29,8 +32,8 @@ class Database
                 self::$instance = new PDO($dsn, $user, $pass, $options);
             } catch (PDOException $e) {
                 http_response_code(500);
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Erreur base de données.']);
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(['success' => false, 'message' => 'Erreur de connexion à la base de données.']);
                 exit;
             }
         }
