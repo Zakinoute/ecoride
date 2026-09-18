@@ -44,11 +44,11 @@ switch ($action) {
         requireRole('admin');
         $pdo = getPDO();
 
-        // Trajets par jour (30 derniers jours)
+        // Covoiturages réservés par jour (30 derniers jours) : même mesure que MongoDB
         $stmt = $pdo->query("
-            SELECT DATE(departure_datetime) AS day, COUNT(*) AS count
-            FROM trips
-            WHERE departure_datetime >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+            SELECT DATE(created_at) AS day, COUNT(*) AS count
+            FROM bookings
+            WHERE status = 'confirmed' AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
             GROUP BY day
             ORDER BY day ASC
         ");
