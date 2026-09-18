@@ -1,11 +1,12 @@
 <?php
-require_once __DIR__ . '/Database.php';
-
 /**
- * User — gestion des utilisateurs (inscription, connexion, profil, suspension).
+ * User — comptes utilisateurs (inscription, connexion, profil).
  */
 class User
 {
+    /** 8 caractères minimum, dont une majuscule, un chiffre et un caractère spécial. */
+    private const PASSWORD_RULE = '/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/';
+
     private PDO $pdo;
 
     public function __construct()
@@ -22,8 +23,8 @@ class User
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return ['success' => false, 'message' => 'Adresse email invalide.'];
         }
-        if (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
-            return ['success' => false, 'message' => 'Mot de passe trop faible (8 car. min, 1 maj, 1 chiffre, 1 spécial).'];
+        if (!preg_match(self::PASSWORD_RULE, $password)) {
+            return ['success' => false, 'message' => 'Mot de passe trop faible. Il doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.'];
         }
 
         $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = ? OR pseudo = ?');
@@ -32,79 +33,38 @@ class User
             return ['success' => false, 'message' => 'Ce pseudo ou email est déjà utilisé.'];
         }
 
+        // Le mot de passe n'est jamais stocké en clair : hachage bcrypt avec sel aléatoire.
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->pdo->prepare('INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)');
-        $stmt->execute([$pseudo, $email, $hash]);
+        $this->pdo->prepare('INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)')
+                  ->execute([$pseudo, $email, $hash]);
 
-        return ['success' => true, 'id' => (int) $this->pdo->lastInsertId(), 'credits' => 20];
+        return ['success' => true, 'message' => 'Compte créé avec succès ! 20 crédits offerts.', 'id' => (int) $this->pdo->lastInsertId()];
     }
 
     // ── Connexion ─────────────────────────────────────────────
     public function login(string $email, string $password): array
     {
-        $stmt = $this->pdo->prepare(
-            'SELECT id, pseudo, password, role, credits, status, is_driver, is_passenger FROM users WHERE email = ?'
-        );
+        $stmt = $this->pdo->prepare('SELECT id, pseudo, password, role, credits, status FROM users WHERE email = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
+        // Même message si l'e-mail ou le mot de passe est faux : on n'aide pas un attaquant.
         if (!$user || !password_verify($password, $user['password'])) {
             return ['success' => false, 'message' => 'Identifiants incorrects.'];
         }
         if ($user['status'] === 'suspended') {
-            return ['success' => false, 'message' => 'Compte suspendu. Contactez l\'administration.'];
+            return ['success' => false, 'message' => 'Votre compte est suspendu. Contactez l\'administration.'];
         }
 
         unset($user['password']);
-        return ['success' => true, 'user' => $user];
+        return ['success' => true, 'message' => 'Connexion réussie.', 'user' => $user];
     }
 
     // ── Profil ────────────────────────────────────────────────
     public function findById(int $id): ?array
     {
-        $stmt = $this->pdo->prepare(
-            'SELECT id, pseudo, email, role, credits, photo, is_driver, is_passenger, status FROM users WHERE id = ?'
-        );
+        $stmt = $this->pdo->prepare('SELECT id, pseudo, email, role, credits, photo, is_driver, is_passenger FROM users WHERE id = ?');
         $stmt->execute([$id]);
         return $stmt->fetch() ?: null;
-    }
-
-    public function updateProfile(int $id, array $data): bool
-    {
-        $allowed = ['pseudo', 'email', 'photo', 'is_driver', 'is_passenger'];
-        $fields  = [];
-        $values  = [];
-        foreach ($allowed as $field) {
-            if (array_key_exists($field, $data)) {
-                $fields[] = "{$field} = ?";
-                $values[] = $data[$field];
-            }
-        }
-        if (empty($fields)) return false;
-
-        $values[] = $id;
-        $sql = 'UPDATE users SET ' . implode(', ', $fields) . ' WHERE id = ?';
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute($values);
-    }
-
-    // ── Suspension (admin) ────────────────────────────────────
-    public function suspend(int $id): bool
-    {
-        $stmt = $this->pdo->prepare("UPDATE users SET status = 'suspended' WHERE id = ?");
-        return $stmt->execute([$id]);
-    }
-
-    public function activate(int $id): bool
-    {
-        $stmt = $this->pdo->prepare("UPDATE users SET status = 'active' WHERE id = ?");
-        return $stmt->execute([$id]);
-    }
-
-    // ── Crédits ───────────────────────────────────────────────
-    public function updateCredits(int $id, int $delta): bool
-    {
-        $stmt = $this->pdo->prepare('UPDATE users SET credits = credits + ? WHERE id = ?');
-        return $stmt->execute([$delta, $id]);
     }
 }

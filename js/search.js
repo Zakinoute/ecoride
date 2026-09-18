@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="trip-meta" style="text-align:right">
-          <div class="trip-price">${parseFloat(trip.price).toFixed(2)} €</div>
+          <div class="trip-price">${parseInt(trip.price, 10)} crédits</div>
           <div class="trip-seats">par place</div>
           <button class="btn btn-primary btn-sm mt-2 btn-view-trip" data-id="${trip.id}">
             Voir le trajet →

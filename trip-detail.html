@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div>
         <div class="card" style="position:sticky;top:80px">
           <div style="font-size:2.5rem;font-weight:800;color:var(--primary);margin-bottom:.25rem">
-            ${parseFloat(t.price).toFixed(2)} €
+            ${parseInt(t.price, 10)} crédits
           </div>
           <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem">par personne</div>
           <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;font-size:.9rem">
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
 
           ${canBook
-            ? `<button class="btn btn-primary btn-lg w-full" id="bookBtn">🪙 Participer — ${parseFloat(t.price).toFixed(2)} crédits</button>`
+            ? `<button class="btn btn-primary btn-lg w-full" id="bookBtn">🪙 Participer — ${parseInt(t.price, 10)} crédits</button>`
             : !user
               ? `<a href="login.html" class="btn btn-outline btn-lg w-full">Se connecter pour réserver</a>`
               : `<button class="btn btn-primary btn-lg w-full" disabled>Indisponible</button>`
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Gestion réservation
   document.getElementById('bookBtn')?.addEventListener('click', () => {
     const user = EcoRide.getAuthState();
-    document.getElementById('modalPrice').textContent    = `${parseFloat(t.price).toFixed(2)} crédits`;
+    document.getElementById('modalPrice').textContent    = `${parseInt(t.price, 10)} crédits`;
     document.getElementById('modalCredits').textContent  = user.credits;
     document.getElementById('modalRemaining').textContent= `${user.credits - parseFloat(t.price)} crédits`;
     EcoRide.openModal('bookModal');

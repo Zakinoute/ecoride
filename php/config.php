@@ -1,34 +1,21 @@
 <?php
 // ============================================================
-// EcoRide - Configuration base de données
+// EcoRide - Configuration et chargement des classes
 // ============================================================
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'ecoride');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_CHARSET', 'utf8mb4');
-
-define('PLATFORM_FEE', 2); // crédits prélevés par EcoRide par trajet
-
-function getPDO(): PDO {
-    static $pdo = null;
-    if ($pdo === null) {
-        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET;
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
-        try {
-            $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
-        } catch (PDOException $e) {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'Erreur de connexion à la base de données.']);
-            exit;
-        }
+// Chargement automatique des classes métier : `new Booking()` charge
+// php/classes/Booking.php la première fois que la classe est utilisée.
+spl_autoload_register(function (string $class): void {
+    $file = __DIR__ . '/classes/' . $class . '.php';
+    if (is_file($file)) {
+        require_once $file;
     }
-    return $pdo;
+});
+
+// Connexion MySQL : une seule connexion, fournie par la classe Database
+// (les identifiants viennent des variables d'environnement).
+function getPDO(): PDO {
+    return Database::getInstance();
 }
 
 // ============================================================
@@ -52,7 +39,7 @@ function startSession(): void {
 // ============================================================
 function jsonResponse(bool $success, string $message = '', array $data = []): void {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(array_merge(['success' => $success, 'message' => $message], $data));
+    echo json_encode(array_merge(['success' => $success, 'message' => $message], $data), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
 }
 

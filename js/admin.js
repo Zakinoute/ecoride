@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       data: {
         labels,
         datasets: [{
-          label: 'Trajets publiés',
+          label: 'Covoiturages réservés',
           data: values,
           backgroundColor: 'rgba(76, 175, 80, 0.7)',
           borderColor: '#2E7D32',
