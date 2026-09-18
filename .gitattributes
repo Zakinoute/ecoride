@@ -1,0 +1,2 @@
+# Scripts shell en LF, même après un clone sous Windows (sinon le conteneur ne démarre pas)
+*.sh text eol=lf

@@ -74,6 +74,17 @@ docker compose up -d     # recrée tout depuis zéro
 
 ---
 
+## Tests automatisés de l'API
+
+Le script `tests/tests_api.sh` rejoue 39 scénarios (recherche, connexion, réservation, crédits, annulation, avis, droits d'accès, injection SQL, XSS, statistiques MySQL et MongoDB).
+
+```bash
+docker compose up -d
+bash tests/tests_api.sh          # remet les bases à zéro, puis lance les 39 tests
+```
+
+---
+
 ## Comptes de test
 
 Mot de passe universel : **`Password1!`**
@@ -100,7 +111,7 @@ ecoride/
 │   ├── schema.sql              # Création des tables MySQL
 │   └── seed.sql                # Données de test
 ├── php/
-│   ├── config.php              # Configuration, session, helpers JSON
+│   ├── config.php              # Chargement des classes, session, helpers JSON
 │   ├── auth.php                # Inscription / Connexion / Déconnexion
 │   ├── trips.php               # CRUD trajets
 │   ├── vehicles.php            # CRUD véhicules
@@ -109,11 +120,12 @@ ecoride/
 │   ├── admin.php               # Espace admin (stats MySQL)
 │   ├── nosql.php               # Statistiques MongoDB (NoSQL)
 │   └── classes/
-│       ├── Database.php        # Singleton PDO
-│       ├── User.php            # Gestion utilisateurs
-│       ├── Trip.php            # Gestion trajets
-│       ├── Booking.php         # Réservations + transactions crédits
-│       └── Review.php          # Avis chauffeurs
+│       ├── Database.php        # Singleton PDO (identifiants lus dans les variables d'environnement)
+│       ├── User.php            # Inscription, connexion, profil
+│       ├── Trip.php            # Recherche, publication, démarrage, fin, annulation
+│       ├── Booking.php         # Réservation dans une transaction (crédits, places, commission)
+│       ├── BookingLog.php      # Journal MongoDB des réservations + agrégations
+│       └── Review.php          # Avis : dépôt, modération, affichage
 ├── js/
 │   ├── main.js                 # Helpers globaux (EcoRide namespace)
 │   ├── auth.js                 # Login / Register
@@ -134,6 +146,16 @@ ecoride/
 
 ---
 
+## Architecture du code PHP
+
+- **Contrôleurs** (`php/auth.php`, `php/trips.php`, `php/reviews.php`, `php/nosql.php`) : lisent la requête, vérifient la session et le rôle, appellent une classe, renvoient du JSON.
+- **Classes métier** (`php/classes/`) : contiennent les règles (crédits, places, commission, avis). Elles sont chargées automatiquement (`spl_autoload_register` dans `config.php`).
+- **Database** : une seule connexion PDO, créée au premier appel.
+
+Les espaces véhicules, employé et administrateur (`vehicles.php`, `employee.php`, `admin.php`) utilisent directement `getPDO()`.
+
+---
+
 ## Architecture base de données
 
 ### MySQL (données relationnelles)
@@ -146,8 +168,9 @@ ecoride/
 - `platform_credits` — gains de la plateforme (2 crédits/réservation)
 
 ### MongoDB (statistiques NoSQL)
-- Collection `bookings_log` — événements de réservation
-- Aggregation pipeline pour les graphiques admin (trajets/jour, crédits/jour)
+- Collection `bookings_log` — un document par réservation confirmée, écrit par `Booking::book()` après la validation MySQL
+- Pipeline d'agrégation (`$match`, `$group`, `$sort`) pour les graphiques admin : covoiturages par jour, crédits plateforme par jour
+- Si MongoDB est indisponible, la réservation est quand même enregistrée et les graphiques utilisent les chiffres MySQL
 
 ---
 
