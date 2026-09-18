@@ -7,12 +7,12 @@
 -- hash généré avec password_hash('Password1!', PASSWORD_DEFAULT)
 
 INSERT INTO users (pseudo, email, password, role, status, credits, is_driver, is_passenger) VALUES
-('AdminEco',   'admin@ecoride.fr',    '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'admin',    'active', 100, 0, 0),
-('EmployeeLuc','employe@ecoride.fr',  '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'employee', 'active', 50,  0, 0),
-('SophiaD',    'sophia@example.com',  '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'user',     'active', 45,  1, 1),
-('MarcoV',     'marco@example.com',   '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'user',     'active', 30,  1, 1),
-('ClaireB',    'claire@example.com',  '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'user',     'active', 60,  0, 1),
-('TomR',       'tom@example.com',     '$2y$12$LmQX3kVX2vGz0rF8N1aOcumvOjfHvT5wL4rN9eK1bHrQzVcA6y3ki', 'user',     'active', 20,  1, 0);
+('AdminEco',   'admin@ecoride.fr',    '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'admin',    'active', 100, 0, 0),
+('EmployeeLuc','employe@ecoride.fr',  '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'employee', 'active', 50,  0, 0),
+('SophiaD',    'sophia@example.com',  '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'user',     'active', 45,  1, 1),
+('MarcoV',     'marco@example.com',   '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'user',     'active', 30,  1, 1),
+('ClaireB',    'claire@example.com',  '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'user',     'active', 60,  0, 1),
+('TomR',       'tom@example.com',     '$2y$10$iLfSipbpuvzJ976FzrwPvuDKnDgH7xxOQnU5z9i/28ckVCavQc.x6', 'user',     'active', 20,  1, 0);
 
 -- Véhicules
 INSERT INTO vehicles (user_id, plate, first_registration, brand, model, color, seats, energy) VALUES
@@ -26,13 +26,13 @@ INSERT INTO driver_preferences (user_id, smoking, animals, music, chat) VALUES
 (4, 0, 0, 1, 0),
 (6, 1, 0, 0, 1);
 
--- Trajets
+-- Trajets (dates calculées à partir du jour de l'import : ils sont toujours à venir)
 INSERT INTO trips (driver_id, vehicle_id, departure_address, departure_city, arrival_address, arrival_city, departure_datetime, arrival_datetime, price, available_seats, total_seats, status) VALUES
-(3, 1, '12 Rue de la Paix, Paris',     'Paris',    '5 Avenue de la Liberté, Lyon',   'Lyon',      '2026-04-10 08:00:00', '2026-04-10 12:00:00', 15.00, 3, 4, 'active'),
-(4, 2, '3 Boulevard Victor Hugo, Lyon','Lyon',     '8 Rue Gambetta, Marseille',       'Marseille', '2026-04-10 09:00:00', '2026-04-10 13:30:00', 12.00, 2, 4, 'active'),
-(3, 1, '12 Rue de la Paix, Paris',     'Paris',    '15 Rue des Fleurs, Bordeaux',     'Bordeaux',  '2026-04-12 07:30:00', '2026-04-12 13:00:00', 18.00, 1, 4, 'active'),
-(6, 3, '7 Allée des Roses, Toulouse',  'Toulouse', '2 Rue du Port, Montpellier',      'Montpellier','2026-04-11 14:00:00','2026-04-11 16:30:00', 8.00,  3, 5, 'active'),
-(4, 2, '3 Boulevard Victor Hugo, Lyon','Lyon',     '20 Cours Mirabeau, Aix-en-Provence','Aix-en-Provence','2026-04-13 10:00:00','2026-04-13 13:00:00',10.00, 4, 4, 'active');
+(3, 1, '12 Rue de la Paix, Paris',     'Paris',    '5 Avenue de la Liberté, Lyon',   'Lyon',      DATE_ADD(CURDATE(), INTERVAL '3 08:00' DAY_MINUTE), DATE_ADD(CURDATE(), INTERVAL '3 12:00' DAY_MINUTE), 15.00, 3, 4, 'active'),
+(4, 2, '3 Boulevard Victor Hugo, Lyon','Lyon',     '8 Rue Gambetta, Marseille',       'Marseille', DATE_ADD(CURDATE(), INTERVAL '3 09:00' DAY_MINUTE), DATE_ADD(CURDATE(), INTERVAL '3 13:30' DAY_MINUTE), 12.00, 3, 4, 'active'),
+(3, 1, '12 Rue de la Paix, Paris',     'Paris',    '15 Rue des Fleurs, Bordeaux',     'Bordeaux',  DATE_ADD(CURDATE(), INTERVAL '5 07:30' DAY_MINUTE), DATE_ADD(CURDATE(), INTERVAL '5 13:00' DAY_MINUTE), 18.00, 1, 1, 'active'),
+(6, 3, '7 Allée des Roses, Toulouse',  'Toulouse', '2 Rue du Port, Montpellier',      'Montpellier',DATE_ADD(CURDATE(), INTERVAL '4 14:00' DAY_MINUTE), DATE_ADD(CURDATE(), INTERVAL '4 16:30' DAY_MINUTE), 8.00,  4, 4, 'active'),
+(4, 2, '3 Boulevard Victor Hugo, Lyon','Lyon',     '20 Cours Mirabeau, Aix-en-Provence','Aix-en-Provence',DATE_ADD(CURDATE(), INTERVAL '6 10:00' DAY_MINUTE), DATE_ADD(CURDATE(), INTERVAL '6 13:00' DAY_MINUTE),10.00, 4, 4, 'active');
 
 -- Réservations
 INSERT INTO bookings (trip_id, passenger_id, credits_used, status) VALUES
