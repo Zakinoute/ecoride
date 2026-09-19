@@ -1,6 +1,6 @@
 <?php
 /**
- * BookingLog — journal des réservations dans MongoDB (NoSQL).
+ * BookingLogRepository — journal des réservations dans MongoDB (NoSQL).
  *
  * Chaque réservation confirmée ajoute un document dans la collection
  * `bookings_log`. Les statistiques de l'administrateur regroupent ces
@@ -8,7 +8,7 @@
  *
  * Utilise le pilote natif : l'extension PHP `mongodb`, installée par le Dockerfile.
  */
-class BookingLog
+class BookingLogRepository
 {
     private const COLLECTION = 'bookings_log';
 
