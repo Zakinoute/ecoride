@@ -39,4 +39,26 @@ class Database
         }
         return self::$instance;
     }
+
+    /**
+     * Exécute $work dans une transaction : tout est enregistré, ou rien.
+     *
+     * Tous les repositories utilisent la même connexion (singleton) :
+     * leurs requêtes font donc partie de la même transaction.
+     */
+    public static function transaction(callable $work): mixed
+    {
+        $pdo = self::getInstance();
+        $pdo->beginTransaction();
+        try {
+            $result = $work();
+            $pdo->commit();
+            return $result;
+        } catch (Throwable $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
 }
