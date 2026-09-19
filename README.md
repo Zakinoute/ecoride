@@ -111,21 +111,18 @@ ecoride/
 │   ├── schema.sql              # Création des tables MySQL
 │   └── seed.sql                # Données de test
 ├── php/
-│   ├── config.php              # Chargement des classes, session, helpers JSON
-│   ├── auth.php                # Inscription / Connexion / Déconnexion
-│   ├── trips.php               # CRUD trajets
-│   ├── vehicles.php            # CRUD véhicules
-│   ├── reviews.php             # Avis passagers
-│   ├── employee.php            # Espace employé
-│   ├── admin.php               # Espace admin (stats MySQL)
-│   ├── nosql.php               # Statistiques MongoDB (NoSQL)
-│   └── classes/
-│       ├── Database.php        # Singleton PDO (identifiants lus dans les variables d'environnement)
-│       ├── User.php            # Inscription, connexion, profil
-│       ├── Trip.php            # Recherche, publication, démarrage, fin, annulation
-│       ├── Booking.php         # Réservation dans une transaction (crédits, places, commission)
-│       ├── BookingLog.php      # Journal MongoDB des réservations + agrégations
-│       └── Review.php          # Avis : dépôt, modération, affichage
+│   ├── config.php              # Chargement automatique des classes
+│   ├── auth.php, trips.php, reviews.php, vehicles.php,
+│   │   employee.php, admin.php, nosql.php
+│   │                           # Points d'entrée de l'API : chacun appelle son contrôleur
+│   ├── core/
+│   │   ├── Database.php        # Singleton PDO (variables d'environnement) + transaction()
+│   │   ├── Controller.php      # Base des contrôleurs : session, rôles, lecture des données, JSON
+│   │   ├── Repository.php      # Base des repositories MySQL
+│   │   └── BusinessRuleException.php  # Règle métier non respectée
+│   ├── controllers/            # Auth, Trip, Review, Vehicle, Employee, Admin, Stats
+│   ├── models/                 # User, Trip, Booking, Review, Vehicle, Statistics (règles métier)
+│   └── repositories/           # Une classe par table MySQL + BookingLogRepository (MongoDB)
 ├── js/
 │   ├── main.js                 # Helpers globaux (EcoRide namespace)
 │   ├── auth.js                 # Login / Register
@@ -146,13 +143,22 @@ ecoride/
 
 ---
 
-## Architecture du code PHP
+## Architecture du code PHP : MVC et pattern Repository
 
-- **Contrôleurs** (`php/auth.php`, `php/trips.php`, `php/reviews.php`, `php/nosql.php`) : lisent la requête, vérifient la session et le rôle, appellent une classe, renvoient du JSON.
-- **Classes métier** (`php/classes/`) : contiennent les règles (crédits, places, commission, avis). Elles sont chargées automatiquement (`spl_autoload_register` dans `config.php`).
-- **Database** : une seule connexion PDO, créée au premier appel.
+Tout le back-end est en programmation orientée objet.
 
-Les espaces véhicules, employé et administrateur (`vehicles.php`, `employee.php`, `admin.php`) utilisent directement `getPDO()`.
+```
+requête HTTP → trips.php → TripController → Trip (modèle) → TripRepository → MySQL
+                                                           → BookingLogRepository → MongoDB
+```
+
+- **Contrôleurs** (`php/controllers/`, le « C ») : lisent la requête, vérifient la session et le rôle, appellent un modèle, renvoient du JSON. Chaque contrôleur hérite de `Controller` et déclare la liste blanche de ses actions.
+- **Modèles** (`php/models/`, le « M ») : contiennent les règles métier (crédits, places, commission, avis). Une règle non respectée lance une `BusinessRuleException`, que le contrôleur transforme en réponse d'erreur.
+- **Repositories** (`php/repositories/`) : le seul endroit où l'on écrit des requêtes. Un repository par table MySQL (requêtes préparées), plus `BookingLogRepository` pour MongoDB.
+- **Vue** (le « V ») : la partie front-end (pages HTML et JavaScript), qui affiche le JSON renvoyé par l'API.
+- **Database** : une seule connexion PDO (singleton). `Database::transaction()` englobe les requêtes de plusieurs repositories : tout est enregistré, ou rien.
+
+Les classes sont chargées automatiquement (`spl_autoload_register` dans `config.php`).
 
 ---
 
@@ -168,7 +174,7 @@ Les espaces véhicules, employé et administrateur (`vehicles.php`, `employee.ph
 - `platform_credits` — gains de la plateforme (2 crédits/réservation)
 
 ### MongoDB (statistiques NoSQL)
-- Collection `bookings_log` — un document par réservation confirmée, écrit par `Booking::book()` après la validation MySQL
+- Collection `bookings_log` — un document par réservation confirmée, écrit par `Booking::book()` (via `BookingLogRepository`) après la validation MySQL
 - Pipeline d'agrégation (`$match`, `$group`, `$sort`) pour les graphiques admin : covoiturages par jour, crédits plateforme par jour
 - Si MongoDB est indisponible, la réservation est quand même enregistrée et les graphiques utilisent les chiffres MySQL
 
